@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from '../providers/AuthProvider';
 import { Link } from 'react-router-dom';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 const Register = () => {
-
+    const [showPassword, setShowPassword] = useState(false);
     const { createUser } = useContext(UserContext);
+    const eyeIcon = <EyeIcon className="h-6 w-6" />
+    const eyeSlashIcon = <EyeSlashIcon className="h-6 w-6" />
 
     const handleRegister = event => {
         event.preventDefault();
@@ -22,6 +25,10 @@ const Register = () => {
             .catch(error => {
                 console.error(error);
             })
+    }
+
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
     }
     return (
         <div className="min-h-screen bg-base-200">
@@ -43,11 +50,12 @@ const Register = () => {
                             </label>
                             <input type="email" name='email' placeholder="Your Email" className="input input-bordered" required />
                         </div>
-                        <div className="form-control">
+                        <div className="form-control relative">
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="password" name='password' placeholder="Your Password" className="input input-bordered" required />
+                            <input type={showPassword ? "text" : "password"} name='password' placeholder="Your Password" className="input input-bordered" required />
+                            <button onClick={handleShowPassword} className='absolute right-2.5 bottom-2.5'>{showPassword ? eyeIcon : eyeSlashIcon}</button>
                         </div>
                         <div className="form-control mt-4">
                             <button className="btn btn-accent">Register</button>
